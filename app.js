@@ -65,4 +65,10 @@ passport.deserializeUser(async (id, done) => {
   }
 });
 
+app.post("/log-in", passport.authenticate("local", {
+  successRedirect: "/",
+  failureRedirect: "/"
+})
+);
+
 app.listen(3000, () => console.log("App listening on port 3000!"));
