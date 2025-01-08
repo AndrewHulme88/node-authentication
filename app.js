@@ -4,6 +4,7 @@ const express = require("express");
 const session = require("express-session");
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
+const bcrypt = require("bcryptjs");
 
 const pool = new Pool({
   connectionString: process.env.DATABASEURL || 'postgresql://andrew:ParkwayDrive@localhost:5432/authentication',
@@ -65,6 +66,11 @@ passport.deserializeUser(async (id, done) => {
   }
 });
 
+app.use((req, res, next) => {
+  res.locals.currentUser = req.user;
+  next();
+});
+
 app.post("/log-in", passport.authenticate("local", {
   successRedirect: "/",
   failureRedirect: "/"
@@ -79,5 +85,14 @@ app.get("/log-out", (req, res, next) => {
     res.redirect("/");
   });
 });
+
+bcrypt.hash(req.body.password, 10, async (err, hashedPassword) => {
+
+})
+
+const match = await bcrypt.compare(password, user.password);
+if (!match) {
+  return done(null, false, { message: "Incorrect password" })
+}
 
 app.listen(3000, () => console.log("App listening on port 3000!"));
