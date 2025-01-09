@@ -7,7 +7,7 @@ const LocalStrategy = require("passport-local").Strategy;
 const bcrypt = require("bcryptjs");
 
 const pool = new Pool({
-  connectionString: process.env.DATABASEURL || 'postgresql://andrew:ParkwayDrive@localhost:5432/authentication',
+  connectionString: process.env.DATABASEURL || 'postgresql://andrew:mydb@localhost:5432/authentication',
 });
 
 const app = express();
